@@ -14,23 +14,23 @@ let parseHTML = (html) => {
   html = html.slice(html.indexOf(' '));
 
   while(html.indexOf('=') !== -1 && html.indexOf('=') < html.indexOf('>')) {
-    if((html.indexOf('="') < html.indexOf('=%') && html.indexOf('="') !== -1) || html.indexOf('=%') === -1 && html.indexOf('="') !== -1) {
+    if((html.indexOf('="') < html.indexOf('="${') && html.indexOf('="') !== -1) || html.indexOf('="${') === -1 && html.indexOf('="') !== -1) {
       let attr = html.slice(0, html.indexOf('=')).trim();
       let value = html.slice(html.indexOf('=') + 2, html.indexOf('"', html.indexOf('"') + 1));
       result += `${elemName}${inc}.setAttribute('${attr}','${value}');`;
       html = html.slice(html.indexOf('"', html.indexOf('"') + 1) + 1).trim();
-    } else if(html.indexOf('=%') !== -1) {
+    } else if(html.indexOf('="${') !== -1) {
       let attr = html.slice(0, html.indexOf('=')).trim();
-      let value = html.slice(html.indexOf('=') + 2, html.indexOf('%', html.indexOf('%') + 1));
+      let value = html.slice(html.indexOf('=') + 4, html.indexOf('}', html.indexOf('{') + 1));
       result += `${elemName}${inc}.setAttribute('${attr}',${value});`;
-      html = html.slice(html.indexOf('%', html.indexOf('%') + 1) + 1).trim();
+      html = html.slice(html.indexOf('}"') + 2).trim();
     }
   }
 
   html = html.slice(html.indexOf('>') + 1);
   if(html.lastIndexOf('<') !== -1) {
    let innerHTML = html.slice(0, html.lastIndexOf('<')).trim();
-   result += `${elemName}${inc}.innerHTML = '${innerHTML}';`;
+   result += `${elemName}${inc}.innerHTML = \`${innerHTML}\`;`;
   }
   return result;
 }
@@ -38,19 +38,20 @@ let parseHTML = (html) => {
 let fileString = fs.readFileSync(process.argv[2], 'utf8');
 let data = fileString;
 let newFileString = '';
-let generatedJS = '';
 
 while(data.indexOf('{{') !== -1) {
   newFileString += data.slice(0, data.indexOf('{{'));
   let html = data.slice(data.indexOf('{{') + 2, data.indexOf('}}')).trim();
-  generatedJS += parseHTML(html);
+  let generatedJS = parseHTML(html);
   data = data.slice(data.indexOf('}}') + 2);
   newFileString += `${elemName}${inc}`;
+  newFileString += data.slice(0, data.indexOf(';') + 1);
+  data = data.slice(data.indexOf(';') + 1);
+  newFileString += generatedJS;
   ++inc;
 }
 
 newFileString += data;
-newFileString = (generatedJS + newFileString);
 
 fs.writeFile(process.argv[3], newFileString, (err) => {
   if (err) throw err;

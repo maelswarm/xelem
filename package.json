@@ -1,6 +1,6 @@
 {
   "name": "xelem",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Make HTML elements more easily in JS",
   "main": "index.js",
   "repository": "github:roecrew/xelem",
