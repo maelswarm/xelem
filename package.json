@@ -1,0 +1,20 @@
+{
+  "name": "xelem",
+  "version": "0.1.0",
+  "description": "Make HTML elements more easily in JS",
+  "main": "index.js",
+  "repository": "github:roecrew/xelem",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "xelem": "./index.js"
+  },
+  "keywords": [
+    "html",
+    "js",
+    "javascript"
+  ],
+  "author": "roecrew",
+  "license": "MIT"
+}
