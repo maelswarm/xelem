@@ -9,6 +9,9 @@ let parseHTML = (html) => {
 
   let result = '';
 
+  result += `let ${elemName}${inc} = document.createElement('div');`;
+
+/*
   let tagName = html.slice(html.indexOf('<') + 1, html.indexOf(' '));
   result += `let ${elemName}${inc} = document.createElement('${tagName}');`;
   html = html.slice(html.indexOf(' '));
@@ -25,9 +28,9 @@ let parseHTML = (html) => {
       result += `${elemName}${inc}.setAttribute('${attr}',${value});`;
       html = html.slice(html.indexOf('}"') + 2).trim();
     }
-  }
+  }*/
 
-  html = html.slice(html.indexOf('>') + 1);
+  //html = html.slice(html.indexOf('>') + 1);
   if(html.lastIndexOf('<') !== -1) {
    let innerHTML = html.slice(0, html.lastIndexOf('<')).trim();
    result += `${elemName}${inc}.innerHTML = \`${innerHTML}\`;`;
@@ -45,6 +48,9 @@ while(data.indexOf('{{') !== -1) {
   if(tmp.lastIndexOf('{') !== -1) {
     newFileString += tmp.slice(0, tmp.lastIndexOf('{') + 1);
     tmp = tmp.slice(tmp.lastIndexOf('{') + 1);
+  } else if(tmp.lastIndexOf(';') !== -1) {
+    newFileString += tmp.slice(0, tmp.lastIndexOf(';') + 1);
+    tmp = tmp.slice(tmp.lastIndexOf(';') + 1);
   }
   let html = data.slice(data.indexOf('{{') + 2, data.indexOf('}}')).trim();
   let generatedJS = parseHTML(html);
