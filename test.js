@@ -1,3 +1,4 @@
+let f = 'this should be before';
 let c = 'hello';
 let d = 'universe';
 document.querySelector('.st0').appendChild({{

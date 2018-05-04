@@ -41,7 +41,11 @@ let newFileString = '';
 
 while(data.indexOf('{{') !== -1) {
   let tmp = '';
-  tmp += data.slice(0, data.indexOf('{{'));
+  tmp = data.slice(0, data.indexOf('{{'));
+  if(tmp.lastIndexOf(';') !== -1) {
+    newFileString += tmp.slice(0, tmp.lastIndexOf(';') + 1);
+    tmp = tmp.slice(tmp.lastIndexOf(';') + 1);
+  }
   let html = data.slice(data.indexOf('{{') + 2, data.indexOf('}}')).trim();
   let generatedJS = parseHTML(html);
   data = data.slice(data.indexOf('}}') + 2);
