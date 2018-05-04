@@ -16,7 +16,7 @@ Or this?
 ````js
 let myClass = 'hello';
 document.querySelector('.st0').appendChild({{
-  <div class=%myClass% id="world">
+  <div class="${myClass}" id="world">
     Hello World!
   </div>
 }});
