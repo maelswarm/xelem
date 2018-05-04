@@ -40,14 +40,15 @@ let data = fileString;
 let newFileString = '';
 
 while(data.indexOf('{{') !== -1) {
-  newFileString += data.slice(0, data.indexOf('{{'));
+  let tmp = '';
+  tmp += data.slice(0, data.indexOf('{{'));
   let html = data.slice(data.indexOf('{{') + 2, data.indexOf('}}')).trim();
   let generatedJS = parseHTML(html);
   data = data.slice(data.indexOf('}}') + 2);
-  newFileString += `${elemName}${inc}`;
-  newFileString += data.slice(0, data.indexOf(';') + 1);
+  tmp += `${elemName}${inc}`;
+  tmp += data.slice(0, data.indexOf(';') + 1);
   data = data.slice(data.indexOf(';') + 1);
-  newFileString += generatedJS;
+  newFileString += (generatedJS + tmp);
   ++inc;
 }
 
