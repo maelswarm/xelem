@@ -14,10 +14,17 @@ let parseHTML = (html) => {
   html = html.slice(html.indexOf(' '));
 
   while(html.indexOf('=') !== -1 && html.indexOf('=') < html.indexOf('>')) {
-    let attr = html.slice(0, html.indexOf('=')).trim();
-    let value = html.slice(html.indexOf('=') + 2, html.indexOf('"', html.indexOf('"') + 1));
-    result += `${elemName}${inc}.setAttribute('${attr}','${value}');`;
-    html = html.slice(html.indexOf('"', html.indexOf('"') + 1) + 1).trim()
+    if((html.indexOf('="') < html.indexOf('=%') && html.indexOf('="') !== -1) || html.indexOf('=%') === -1 && html.indexOf('="') !== -1) {
+      let attr = html.slice(0, html.indexOf('=')).trim();
+      let value = html.slice(html.indexOf('=') + 2, html.indexOf('"', html.indexOf('"') + 1));
+      result += `${elemName}${inc}.setAttribute('${attr}','${value}');`;
+      html = html.slice(html.indexOf('"', html.indexOf('"') + 1) + 1).trim();
+    } else if(html.indexOf('=%') !== -1) {
+      let attr = html.slice(0, html.indexOf('=')).trim();
+      let value = html.slice(html.indexOf('=') + 2, html.indexOf('%', html.indexOf('%') + 1));
+      result += `${elemName}${inc}.setAttribute('${attr}',${value});`;
+      html = html.slice(html.indexOf('%', html.indexOf('%') + 1) + 1).trim();
+    }
   }
 
   html = html.slice(html.indexOf('>') + 1);

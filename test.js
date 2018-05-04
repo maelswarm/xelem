@@ -1,5 +1,6 @@
+let c = 'hello';
 document.querySelector('.st0').appendChild({{
-  <div class="hello" id="world">
+  <div class=%c% id="world">
     Hello World!
   </div>
 }});
