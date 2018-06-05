@@ -45,7 +45,7 @@ let newFileString = '';
 while(data.indexOf('{{') !== -1) {
   let tmp = '';
   tmp = data.slice(0, data.indexOf('{{'));
-  if(tmp.lastIndexOf(';') !== -1) {
+  if(tmp.lastIndexOf(';') > tmp.lastIndexOf('{')) {
     newFileString += tmp.slice(0, tmp.lastIndexOf(';') + 1);
     tmp = tmp.slice(tmp.lastIndexOf(';') + 1);
   } else if(tmp.lastIndexOf('{') !== -1) {
